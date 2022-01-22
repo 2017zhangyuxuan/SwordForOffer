@@ -56,6 +56,7 @@ namespace t2{
             cout << "析构t2" << endl;
             cout << &t2::Singleton::mutex << endl;
         }
+        // 这里需要再定义个静态的销毁函数，是因为智能指针销毁类时默认调用类的析构函数，而Singleton的析构函数定义为私有
         static void Destroy(Singleton* singleton){
             if (singleton != nullptr) {
                 delete singleton;
@@ -81,8 +82,25 @@ namespace t2{
     std::mutex Singleton::mutex;
 }
 
+//   ----------- 懒汉式，推荐使用局部静态变量，简单又方便，C++11 后局部静态变量的初始化是线程安全的------------
+namespace t3 {
+    class Singleton {
+    private:
+        Singleton() {}
+        ~Singleton() {
+            cout << "析构t6" << endl;
+        }
+
+    public:
+        static Singleton* getInstance(){
+            static Singleton instance;
+            return &instance;
+        }
+    };
+}
+
 //   ----------- 饿汉式，不用考虑多线程的问题，使用智能指针------------
-namespace t3{
+namespace t4{
     class Singleton {
     private:
         Singleton(){}
@@ -107,7 +125,7 @@ namespace t3{
 }
 
 //   ----------- 饿汉式，instance是对象实例------------
-namespace t4{
+namespace t5{
     class Singleton {
     private:
         Singleton(){}
@@ -126,7 +144,7 @@ namespace t4{
 }
 
 //   ----------- 饿汉式，instance是对象指针，需要自定义内部类------------
-namespace t5{
+namespace t6{
     class Singleton {
     private:
         Singleton(){}
@@ -160,18 +178,21 @@ void Problem2(){
 //    cout << t1::Singleton::getInstance() << endl;
 //    cout << t1::Singleton::getInstance() << endl;
 //    cout << t1::Singleton::getInstance() << endl;
-//    cout << t2::Singleton::getInstance() << endl;
-//    cout << t2::Singleton::getInstance() << endl;
-//    cout << t2::Singleton::getInstance() << endl;
+    cout << t2::Singleton::getInstance() << endl;
+    cout << t2::Singleton::getInstance() << endl;
+    cout << t2::Singleton::getInstance() << endl;
 //    cout << t3::Singleton::getInstance() << endl;
 //    cout << t3::Singleton::getInstance() << endl;
 //    cout << t3::Singleton::getInstance() << endl;
-    cout << t4::Singleton::getInstance() << endl;
-    cout << t4::Singleton::getInstance() << endl;
-    cout << t4::Singleton::getInstance() << endl;
-    cout << t5::Singleton::getInstance() << endl;
-    cout << t5::Singleton::getInstance() << endl;
-    cout << t5::Singleton::getInstance() << endl;
+//    cout << t4::Singleton::getInstance() << endl;
+//    cout << t4::Singleton::getInstance() << endl;
+//    cout << t4::Singleton::getInstance() << endl;
+//    cout << t5::Singleton::getInstance() << endl;
+//    cout << t5::Singleton::getInstance() << endl;
+//    cout << t5::Singleton::getInstance() << endl;
+//    cout << t6::Singleton::getInstance() << endl;
+//    cout << t6::Singleton::getInstance() << endl;
+//    cout << t6::Singleton::getInstance() << endl;
     cout << "Problem2 End" << endl;
 
 }
