@@ -1,4 +1,7 @@
 project(chapter2)
 cmake_minimum_required(VERSION 3.20)
+set(CMAKE_CXX_STANDARD 14)
 aux_source_directory(. SRC_LIST)
-add_executable(chapter2 ${SRC_LIST})
+include_directories(../cpputil/container)
+include_directories(Structs.h)
+add_executable(chapter2 ${SRC_LIST} ../cpputil/container/ContainersUtil.h ../cpputil/container/ContainersUtil.cpp Structs.h)

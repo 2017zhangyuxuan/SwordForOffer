@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 //   ----------- 懒汉式，不使用智能指针，需要定义一个内部类来进行垃圾回收------------
 namespace t1{
     class Singleton {
